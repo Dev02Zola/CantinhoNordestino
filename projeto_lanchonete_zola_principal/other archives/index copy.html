@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora de Compras</title>
+</head>
+<body>
+    <h1>Calculadora de Compras</h1>
+    <form id="cart-form">
+        <label for="product-select">Selecione um produto:</label>
+        <select id="product-select">
+            <option value="0">Selecione um produto</option>
+            <option value="10">Produto A - R$10</option>
+            <option value="20">Produto B - R$20</option>
+            <option value="30">Produto C - R$30</option>
+        </select>
+        <button type="button" id="add-to-cart">Adicionar ao Carrinho</button>
+
+        <h2>Carrinho de Compras</h2>
+        <ul id="cart-list"></ul>
+
+        <p>Total: R$<span id="total">0.00</span></p>
+        <button type="button" id="clear-cart">Limpar Carrinho</button>
+    </form>
+
+    <script>
+        const productSelect = document.getElementById('product-select');
+        const addToCartButton = document.getElementById('add-to-cart');
+        const cartList = document.getElementById('cart-list');
+        const totalSpan = document.getElementById('total');
+        const clearCartButton = document.getElementById('clear-cart');
+
+        let cart = [];
+        let total = 0;
+
+        addToCartButton.addEventListener('click', () => {
+            const selectedProduct = productSelect.value;
+            if (selectedProduct === '0') {
+                alert('Por favor, selecione um produto válido.');
+                return;
+            }
+
+            const productName = productSelect.options[productSelect.selectedIndex].text;
+            cart.push({ name: productName, price: parseFloat(selectedProduct) });
+            updateCart();
+        });
+
+        clearCartButton.addEventListener('click', () => {
+            cart = [];
+            total = 0;
+            updateCart();
+        });
+
+        function updateCart() {
+            cartList.innerHTML = '';
+            total = 0;
+
+            cart.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.name} - R$${item.price.toFixed(2)}`;
+                cartList.appendChild(listItem);
+                total += item.price;
+            });
+
+            totalSpan.textContent = total.toFixed(2);
+        }
+    </script>
+</body>
+</html>
